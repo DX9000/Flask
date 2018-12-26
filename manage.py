@@ -1,14 +1,10 @@
-from flask import Flask,session
-from flask.ext.wtf import CSRFProtect
-from flask.ext.sqlalchemy import SQLAlchemy
-from redis import StrictRedis
-# 指定session保存位置
-from flask_session import Session
-
-from flask_script import Manager
+from flask import session
 from flask_migrate import Migrate,MigrateCommand
+from flask_script import Manager
 
-from config import Config
+from info import creat_app, db
+
+# from config import Config
 
 #
 # class Config():
@@ -36,17 +32,20 @@ from config import Config
 #     # 设置过期时间
 #     PERMANENT_SESSION_LIFETIME = 86400 * 2
 
-app = Flask(__name__)
+# app = Flask(__name__)
+#
+# app.config.from_object(Config)
+#
+# db = SQLAlchemy(app)
+#
+# redis_store = StrictRedis(host=Config.REDIS_HOST,port=Config.REDIS_PORT)
+#
+# CSRFProtect(app)
+#
+# Session(app)
 
-app.config.from_object(Config)
 
-db = SQLAlchemy(app)
-
-redis_store = StrictRedis(host=Config.REDIS_HOST,port=Config.REDIS_PORT)
-
-CSRFProtect(app)
-
-Session(app)
+app = creat_app('developerment')
 
 manager = Manager(app)
 # app与db关联

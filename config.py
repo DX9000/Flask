@@ -25,3 +25,21 @@ class Config():
     SESSION_PERMANENT = False
     # 设置过期时间
     PERMANENT_SESSION_LIFETIME = 86400 * 2
+
+
+class DevelopermentConfig(Config):
+    DEBUG = True
+
+class ProductionConfig(Config):
+    DEBUG = False
+
+    SQALCHEMY_DATABASES_URL = 'mysql:root@172.0.0.1:3306/infomation27'
+
+class TestConfig(Config):
+    TESTING = True
+
+config = {
+    'developerment': DevelopermentConfig,
+    'production':ProductionConfig,
+    'test':TestConfig
+}
