@@ -1,3 +1,5 @@
+# current_app:应用上下文里的变量，表示当前url
+from flask import current_app
 from flask import render_template
 
 from . import index_blu
@@ -14,3 +16,7 @@ def index():
 
 
     return render_template('news/index.html')
+
+@index_blu.route('/favicon.ico')
+def favicon():
+    return current_app.send_static_file('news/favicon.ico')
