@@ -154,7 +154,7 @@ var imageCodeId = ""
 function generateImageCode() {
     imageCodeId = generateUUID()
 
-    var url = "/image_code?imageCodeId=" + imageCodeId
+    var url = "/passport/image_code?imageCodeId=" + imageCodeId
 
     $(".get_pic_code").attr("src", url)
 
