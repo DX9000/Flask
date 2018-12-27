@@ -1,8 +1,12 @@
+import logging
+
 from redis import StrictRedis
 
 
 class Config():
     DEBUG = True
+
+    LOG_LEVEL = logging.DEBUG
 
     SECRET_KEY = 'ZRqSDpV4b6wIoHKfgJqp5T2xiq7Jmryz2ms2XIsc3O8V5I8OTCKaMQOphf2RJVbk'
 
@@ -17,3 +21,13 @@ class Config():
     SESSION_PERMANENT = False
     SESSION_USE_SIGNER = True
     PERMANENT_SESSION_LIFETIME = 846000 * 2
+
+class Developerment(Config):
+    DEBUG = False
+
+
+
+config = {
+    'developerment':Developerment,
+    'config':Config
+}

@@ -1,3 +1,5 @@
+import logging
+
 from redis import StrictRedis
 
 
@@ -7,7 +9,8 @@ class Config():
     SECRET_KEY = 'ZRqSDpV4b6wIoHKfgJqp5T2xiq7Jmryz2ms2XIsc3O8V5I8OTCKaMQOphf2RJVbk'
 
 
-    SQALCHEMY_DATABASES_URL = 'mysql:root@172.0.0.1:3306/infomation27'
+    SQLALCHEMY_DATABASE_URL = 'mysql://root:mysql@127.0.0.1:3306/information27'
+    # SQLALCHEMY_DATABASE_URI = "mysql://root:mysql@127.0.0.1:3306/information27"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
@@ -26,6 +29,8 @@ class Config():
     # 设置过期时间
     PERMANENT_SESSION_LIFETIME = 86400 * 2
 
+    # 设置日志等级
+    LOG_LEVEL = logging.DEBUG
 
 class DevelopermentConfig(Config):
     DEBUG = True
@@ -33,7 +38,10 @@ class DevelopermentConfig(Config):
 class ProductionConfig(Config):
     DEBUG = False
 
-    SQALCHEMY_DATABASES_URL = 'mysql:root@172.0.0.1:3306/infomation27'
+    SQALCHEMY_DATABASES_URL = 'mysql://root:mysql@127.0.0.1:3306/information27'
+
+    LOG_LEVEL = logging.WARNING
+
 
 class TestConfig(Config):
     TESTING = True

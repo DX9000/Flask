@@ -8,9 +8,9 @@ from flask.ext.wtf import CSRFProtect
 from redis import StrictRedis
 
 from config import config
+from info.modules.index import index_blu
 
 db = SQLAlchemy()
-redis_store = None
 
 def setup_log(config_name):
     # 设置日志的记录等级
@@ -24,24 +24,21 @@ def setup_log(config_name):
     # 为全局的日志工具对象（flask app使用的）添加日志记录器
     logging.getLogger().addHandler(file_log_handler)
 
+def create_app(config_name):
 
-
-
-def creat_app(config_name):
-    setup_log(config_name)
     app = Flask(__name__)
 
-    app.config.from_object(config[config_name])
-    # Flask很多拓展里都可以先初始化拓展对象，再init_app方法去初始化
-    db.init_app(app)
-    global redis_store
-    redis_store = StrictRedis(host=config[config_name].REDIS_HOST,port=config[config_name].REDIS_PORT)
+    setup_log(config_name)
 
-    CSRFProtect(app)
+    app.config.from_object(config[config_name])
+
+    db.init_app(app)
+
+    redis_store = StrictRedis(host=config[config_name].REDIS_HOST,port=config[config_name].REDIS_PORT)
 
     Session(app)
 
-    # 注册蓝图
-    from info.modules.index import index_blu
+    CSRFProtect(app)
+
     app.register_blueprint(index_blu)
     return app

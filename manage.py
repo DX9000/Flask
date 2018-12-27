@@ -1,4 +1,3 @@
-from flask import session
 from flask_migrate import Migrate,MigrateCommand
 from flask_script import Manager
 
@@ -55,10 +54,16 @@ manager.add_command('db',MigrateCommand)
 
 
 
-@app.route('/')
-def index():
-    session['name'] = 'ITcast'
-    return '00'
+# @app.route('/')
+# def index():
+#     session['name'] = 'ITcast'
+#     logging.debug('测试db')
+#     logging.warning('测试wa')
+#     logging.info('测试if')
+#     logging.fatal('测试ft')
+#     current_app.logger.error('测试current_app')
+#
+#     return '00'
 
 if __name__ == '__main__':
     manager.run()
