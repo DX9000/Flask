@@ -9,7 +9,7 @@ class Config():
     SECRET_KEY = 'ZRqSDpV4b6wIoHKfgJqp5T2xiq7Jmryz2ms2XIsc3O8V5I8OTCKaMQOphf2RJVbk'
 
 
-    SQLALCHEMY_DATABASE_URL = 'mysql://root:mysql@127.0.0.1:3306/information27'
+    SQLALCHEMY_DATABASE_URI = 'mysql://root:mysql@127.0.0.1:3306/information27'
     # SQLALCHEMY_DATABASE_URI = "mysql://root:mysql@127.0.0.1:3306/information27"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
@@ -48,6 +48,6 @@ class TestConfig(Config):
 
 config = {
     'developerment': DevelopermentConfig,
-    'production':ProductionConfig,
-    'test':TestConfig
+    'production': ProductionConfig,
+    'test': TestConfig
 }

@@ -1,4 +1,5 @@
-from info import redis_store
+from flask import render_template
+
 from . import index_blu
 
 @index_blu.route('/')
@@ -9,5 +10,7 @@ def index():
     # logging.info('测试if')
     # logging.fatal('测试ft')
     # current_app.logger.error('测试current_app')
-    redis_store.set('name','itcast')
-    return '00'
+    # redis_store.set('name','itcast')
+
+
+    return render_template('news/index.html')
