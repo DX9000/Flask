@@ -4,7 +4,6 @@ from logging.handlers import RotatingFileHandler
 from flask import Flask
 from flask.ext.session import Session
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.wtf import CSRFProtect
 from redis import StrictRedis
 
 from config import config
@@ -35,9 +34,9 @@ def creat_app(config_name):
     # Flask很多拓展里都可以先初始化拓展对象，再init_app方法去初始化
     db.init_app(app)
     global redis_store
-    redis_store = StrictRedis(host=config[config_name].REDIS_HOST,port=config[config_name].REDIS_PORT)
+    redis_store = StrictRedis(host=config[config_name].REDIS_HOST,port=config[config_name].REDIS_PORT,decode_responses=True)
 
-    CSRFProtect(app)
+    # CSRFProtect(app)
 
     Session(app)
 
