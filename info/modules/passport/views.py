@@ -6,13 +6,39 @@ from flask import abort, jsonify
 from flask import current_app
 from flask import make_response
 from flask import request
+from flask import session
 
-from info import constants
+from info import constants, db
 from info import redis_store
 from info.models import User
 from info.utils.captcha.captcha import captcha
 from info.utils.response_code import RET
 from . import passport_blu
+
+@passport_blu.route('/login',methods = ['POST'])
+def login():
+    param_dict = request.json
+    mobile = param_dict.get('mobile')
+    passport = param_dict.get('passport')
+    if not all([mobile, passport]):
+        return jsonify(errno=RET.PARAMERR, errmsg='参数不全')
+    if not re.match('1[35678]\\d{9}', mobile):
+        return jsonify(errno=RET.PARAMERR, errmsg='手机号码格式错误')
+    try:
+        user = User.query.filter(User.mobile == mobile).first()
+    except Exception as e :
+        current_app.logger.error(e)
+        return jsonify(erron=RET.DBERR,ermsg='数据库错误')
+    if not user:
+        return jsonify(erron=RET.NODATA, ermsg='用户不存在')
+    if not user.check_password(passport):
+        return jsonify(erron=RET.PWDERR, ermsg='密码校验失败')
+    session['user_id'] = user.id
+    session['mobile'] = user.mobile
+    session['nick_name'] = user.nick_name
+    return jsonify(erron=RET.OK, ermsg='登陆成功')
+
+
 
 @passport_blu.route('/register',methods=['POST'])
 def register():
@@ -41,17 +67,17 @@ def register():
     user.password = password
 
 
-    # try:
-    #     db.session.add(user)
-    #     db.session.commit()
-    # except Exception as e:
-    #     current_app.logger.debug(e)
-    #     db.session.rollback()
-    #     return jsonify(errno=RET.DBERR, errmsg='数据保存失败1')
+    try:
+        db.session.add(user)
+        db.session.commit()
+    except Exception as e:
+        current_app.logger.debug(e)
+        db.session.rollback()
+        return jsonify(errno=RET.DBERR, errmsg='数据保存失败1')
     #
-    # session['user_id'] = user.id
-    # session['mobile'] = user.mobile
-    # session['nick_name'] = user.nick_name
+    session['user_id'] = user.id
+    session['mobile'] = user.mobile
+    session['nick_name'] = user.nick_name
 
 
 

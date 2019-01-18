@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash,check_password_hash
 
 from info import constants
 from info import db
@@ -56,7 +56,7 @@ class User(BaseModel, db.Model):
                                 backref=db.backref('followed', lazy='dynamic'),
                                 lazy='dynamic')
 
-    @@property
+    @property
     def password(self):
         raise AttributeError('当前属性不允许读取')
 
@@ -64,6 +64,8 @@ class User(BaseModel, db.Model):
     def password(self, value):
         self.password_hash = generate_password_hash(value)
 
+    def check_password(self,password):
+        return check_password_hash(self.password_hash,password)
 
 
 
